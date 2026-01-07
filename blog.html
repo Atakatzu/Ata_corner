@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ata's Corner - Personal Stories & Experiences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #006E99;
+            --secondary-color: #29A35C;
+            --accent-color: #BCD93B;
+            --text-color: #2c3e50;
+            --light-bg: #ecf0f1;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Blog Posts */
+        .blog-posts {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .see-more-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .see-more-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .see-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .blog-post {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 3rem;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .post-image.has-photo {
+            font-size: 0;
+        }
+
+        .post-image.has-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .post-content {
+            padding: 2rem;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #000000;
+        }
+
+        .post-category {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        .post-excerpt {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .sidebar-widget {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 0.5rem;
+        }
+
+        .about-text {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .recent-posts {
+            list-style: none;
+        }
+
+        .recent-posts li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-bg);
+        }
+
+        .recent-posts li:last-child {
+            border-bottom: none;
+        }
+
+        .recent-posts a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .recent-posts a:hover {
+            color: var(--secondary-color);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: var(--light-bg);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        /* Blog Page */
+        #blog h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .blog-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--light-bg);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .blog-posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 1100px;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            display: flex;
+            max-height: calc(90vh - 120px);
+            overflow: hidden;
+        }
+
+        .modal-image-section {
+            flex: 0 0 400px;
+            background: var(--light-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-image-container {
+            width: 100%;
+            max-height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: var(--white);
+        }
+
+        .modal-post-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--white);
+        }
+
+        .modal-text-section {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            line-height: 1.8;
+        }
+
+        .modal-text-section p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        /* Mobile */
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-body {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+
+            .modal-image-section {
+                flex: 0 0 auto;
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .modal-image-container {
+                max-height: 250px;
+            }
+
+            .modal-post-placeholder {
+                height: 250px;
+                font-size: 3rem;
+            }
+
+            .header-content h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Ata's Corner</h1>
+                <p>A cozy space for sharing stories, experiences, and capturing life's precious moments</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">Ata's Corner</div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+                    <li><a href="#" onclick="showPage('blog'); return false;">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="page-section active">
+            <div class="container">
+                <div class="blog-grid">
+                    <section class="blog-posts">
+                        <div id="blogPosts"></div>
+                        <div class="see-more-container">
+                            <a href="#" class="see-more-btn" onclick="showPage('blog'); return false;">
+                                See More Posts →
+                            </a>
+                        </div>
+                    </section>
+                    <aside class="sidebar">
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">About Me</h3>
+                            <div class="about-text">
+                                <p>Hi! I'm Ata, a student at Mattayom Watnairong School passionate about coding, photography, and sharing life experiences. This corner of the internet is my digital sanctuary where I document my journey through learning and life.</p>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Recent Posts</h3>
+                            <ul class="recent-posts" id="recentPosts"></ul>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Tags</h3>
+                            <div class="tags">
+                                <a href="#" class="tag" onclick="filterByTag('Photography'); return false;">Photography</a>
+                                <a href="#" class="tag" onclick="filterByTag('Story Telling'); return false;">Story Telling</a>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="page-section">
+            <div class="container">
+                <h2>All Blog Posts</h2>
+                <div class="blog-filter">
+                    <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
+                    <button class="filter-btn" onclick="filterPosts('Photography')">Photography</button>
+                    <button class="filter-btn" onclick="filterPosts('Story Telling')">Story Telling</button>
+                </div>
+                <div class="blog-posts-grid" id="allBlogPosts"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ata's Corner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <div id="modalMeta"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image-section">
+                    <div class="modal-image-container" id="modalImageContainer"></div>
+                </div>
+                <div class="modal-text-section" id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const blogPosts = [
+            {
+                id: 1,
+                title: "How Photography Found Me",
+                category: "Story Telling",
+                date: "June 18, 2025",
+                excerpt: "I didn’t start photography because I had a big dream or a clear plan. Honestly, I joined because I didn’t know which school club to choose. One day...",
+                content: `
+                    <p>I didn’t start photography because I had a big dream or a clear plan. Honestly, I joined because I didn’t know which school club to choose. One day, a friend dragged me into the photography club—and that simple decision ended up shaping who I am today.</p>
+                    <p>What started as “I’ll just try this” turned into a six-year journey that I’m still on. Over time, photography became more than just a club activity. It became a way for me to slow down, observe details, and see the world differently</p>
+                    <p>I especially love miniature photography. I enjoy taking photos of small things that people often overlook, like insects, tiny objects, or toys. There’s something exciting about turning something small into the main subject of a photo. It feels like creating a whole new world in a single frame, where details matter and imagination has no limits.</p>
+                    <p>Recently, I’ve been stepping out of my comfort zone and learning landscape photography. Unlike miniature photography, landscapes teach me patience—waiting for the right light, the right moment, and the right atmosphere. It’s challenging, but that’s what makes it rewarding.</p>
+                    <p>Looking back, it’s funny how something I joined without much thought became such an important part of my life. Photography helped me discover what I enjoy, express myself creatively, and grow over the years. What began with a friend dragging me into a club turned into a passion that continues to evolve, one photo at a time.</p>
+                `,
+                cardImage: "https://i.ibb.co/3Y493Dz6/IMG-9844.jpg",
+                modalImage: "https://i.ibb.co/XxR20Ywj/IMG-9844.jpg"
+            },
+            {
+                id: 2,
+                title: "Duck photo",
+                category: "Photography",
+                date: "Sep 8, 2025",
+                excerpt: "A photo of a duck I took when travelling…",
+                content: `
+                    <p>At sunset, ducks draw silver lines
+Across a lake grown still,
+Their soft quacks echo in the reeds,
+The world obeys their will.</p>
+                    <p>Feathers catch the fading light,
+Burnt gold on humble brown,
+They drift like thoughts with nowhere left
+But water, sky, and sound.</p>
+                    <p>The sun sinks low; the ducks remain,
+Untroubled, calm, and wise,
+As day slips under rippled glass
+And night learns how to rise.</p>
+		<p>🦆 Fun duck fact:
+Ducks have regional accents! Researchers found that ducks from different areas quack slightly differently kind of like how humans have accents depending on where they’re from.</p>
+                `,
+                cardImage: "https://i.ibb.co/TDW70KF9/IMG-0098.jpg",
+                modalImage: "https://i.ibb.co/21y24VhH/IMG-0098.jpg"          
+ },
+{
+                id: 3,
+                title: "Sunset beauty",
+                category: "Photography",
+                date: "Dec 17, 2025",
+                excerpt: "Photo of the sunset over a body of water...",
+                content: `
+                    <p>The sun rests low on the water’s edge,
+A molten path of gold unfolds,
+Each ripple catching quiet fire
+Where day releases what it holds.</p>
+                    <p>The sky breathes amber, soft and wide,
+Clouds layered like a whispered dream,
+While distant hills stand dark and still,
+Guardians of the glowing seam.</p>
+                    <p>The lake remembers every light,
+Reflects it back, then lets it fade,
+And in this hush between the hours,
+The world feels gently, briefly made.</p>
+                `,
+                cardImage: "https://i.ibb.co/vxKwJgwN/IMG-9920.jpg",
+                modalImage: "https://i.ibb.co/d06pcxpv/IMG-9920.jpg"
+            }
+        ];
+
+        let currentPostId = null;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            if (pageId === 'blog') {
+                renderAllBlogPosts();
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderBlogPosts() {
+            const container = document.getElementById('blogPosts');
+            container.innerHTML = '';
+            
+            // Show only first 2 posts on home page
+            blogPosts.slice(0, 2).forEach((post, i) => {
+                const el = document.createElement('article');
+                el.className = 'blog-post';
+                
+                // Check if cardImage is a URL or emoji
+                const isImageUrl = post.cardImage.startsWith('http');
+                const imageStyle = isImageUrl ? `style="background-image: url('${post.cardImage}')"` : '';
+                const imageClass = isImageUrl ? 'post-image has-photo' : 'post-image';
+                const imageContent = isImageUrl ? '' : post.cardImage;
+                
+                el.innerHTML = `
+                    <div class="${imageClass}" ${imageStyle}>${imageContent}</div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">${post.category}</span>
+                            <span class="post-date">${post.date}</span>
+                        </div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more" onclick="openPost(${post.id}); return false;">Read More →</a>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function renderRecentPosts() {
+            const container = document.getElementById('recentPosts');
+            container.innerHTML = '';
+            
+            blogPosts.slice().reverse().forEach(post => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#" onclick="openPost(${post.id}); return false;">${post.title}</a>`;
+                container.appendChild(li);
+            });
+        }
+
+        function renderAllBlogPosts() {
+            const container = document.getElementById('allBlogPosts');
+            container.innerHTML = '';
+            
+            blogPosts.forEach(post => {
+                const el = document.createElement('article');
+                el.className = 'blog-post';
+                el.setAttribute('data-category', post.category);
+                
+                // Check if cardImage is a URL or emoji
+                const isImageUrl = post.cardImage.startsWith('http');
+                const imageStyle = isImageUrl ? `style="background-image: url('${post.cardImage}')"` : '';
+                const imageClass = isImageUrl ? 'post-image has-photo' : 'post-image';
+                const imageContent = isImageUrl ? '' : post.cardImage;
+                
+                el.innerHTML = `
+                    <div class="${imageClass}" ${imageStyle}>${imageContent}</div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">${post.category}</span>
+                            <span class="post-date">${post.date}</span>
+                        </div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more" onclick="openPost(${post.id}); return false;">Read More →</a>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function filterPosts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('#allBlogPosts .blog-post').forEach(post => {
+                if (category === 'all' || post.getAttribute('data-category') === category) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        function filterByTag(category) {
+            // Switch to blog page
+            showPage('blog');
+            
+            // Wait a tiny moment for the page to render
+            setTimeout(() => {
+                // Update filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.textContent === category || (category === 'all' && btn.textContent === 'All Posts')) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Filter the posts
+                document.querySelectorAll('#allBlogPosts .blog-post').forEach(post => {
+                    if (category === 'all' || post.getAttribute('data-category') === category) {
+                        post.style.display = 'block';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            }, 100);
+        }
+
+        function openPost(postId) {
+            currentPostId = postId;
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+
+            document.getElementById('modalTitle').textContent = post.title;
+            document.getElementById('modalMeta').innerHTML = `
+                <div class="post-meta">
+                    <span class="post-category">${post.category}</span>
+                    <span class="post-date">${post.date}</span>
+                </div>
+            `;
+            document.getElementById('modalBody').innerHTML = post.content;
+            
+            // Display modal image
+            const container = document.getElementById('modalImageContainer');
+            const isImageUrl = post.modalImage.startsWith('http');
+            
+            if (isImageUrl) {
+                container.innerHTML = `<img src="${post.modalImage}" class="modal-post-image" alt="${post.title}">`;
+            } else {
+                container.innerHTML = `<div class="modal-post-placeholder">${post.modalImage}</div>`;
+            }
+            
+            document.getElementById('postModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('postModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.id === 'postModal') {
+                closeModal();
+            }
+        }
+
+        renderBlogPosts();
+        renderRecentPosts();
+    </script>
+</body>
+</html>
